@@ -14,13 +14,18 @@
                     font-size: 100px;}
             .but-return {position: absolute;
                     top: 10%;left: 20%;}
+            .fishbowl   {z-index: 0;}
+            .fish   {position: absolute;
+                    z-index: 1;
+                    top: 100%;left: 30%;}
         </style>
         <script src="water_page.js"></script>
     </head>
     <body>
         <p class="water">---Water---</p>
         <div>
-            <img src = "picture\fishbowl_halftransparent.png" id = "fishbowl" width="80%">
+            <img class="fishbowl" src = "picture\fishbowl_halftransparent.png" id = "fishbowl" width="80%">
+            <img class="fish" src="picture\fish1.png" width="15%">
             <div id = "text">
                 <p>要倒多少水進去呢～</p>
                 <p id = "crt_p"></p>

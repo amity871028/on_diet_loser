@@ -2,9 +2,10 @@ var foodtb, recordtbf, record_info, record_n;
 var Name, Weight, unitname, g = [], calorie = [], n;
 var unit = [], flag = [], sum_cal;
 var today = new Date();
-var store;
+var store, sum = 0;
 var all=[], all_n=[];
 function start(){
+  document.getElementById("preview_progressbarTW_img").src = "picture\\empty.png";
   Name = localStorage.getItem("now");
   Weight = localStorage.getItem(Name + "-weight");
   foodtb = document.getElementById("food");
@@ -48,6 +49,9 @@ function start(){
     record_info += this.innerHTML+" "+unit[n]+" "+g[n]+" "+calorie[n]+" ";
     localStorage.setItem(store, record_info);  
     localStorage.setItem(store+"n", record_n);
+    sum+=sum_cal;
+    localStorage.setItem(Name+"-today_eat", sum);
+    calculate();
     if(localStorage.getItem(store)) {
       all = localStorage.getItem(store).split(" ");
     all_n = localStorage.getItem(store+"n").split(" ");
@@ -59,6 +63,7 @@ function start(){
   all_n = localStorage.getItem(store+"n").split(" ");
   }
   loadsearches(); 
+  calculate();
 }
 var unittext, gtext, Newunit;
 function advise(e){
@@ -79,14 +84,15 @@ function advise(e){
     document.getElementById("g"+n).innerHTML = a_g;
     document.getElementById("calorie"+n).innerHTML = sum_cal.toFixed(1);
     flag[n] = true;
-    console.log("adv all = " + all);
     all[4*(n-1)] = document.getElementById("name"+n).innerHTML;
     all[4*(n-1)+1] = unit[n];
     all[4*(n-1)+2] = g[n];
     all[4*(n-1)+3] = calorie[n];
     all_n[n-1] = n;
     loadsearches();  
+    calculate();
   }
+  
 }
 
 function del(e){
@@ -124,28 +130,51 @@ function loadsearches(){
   localStorage.setItem(store, record_info);  
   localStorage.setItem(store+"n", record_n);
   recordtbf.innerHTML = "";
-  console.log("all = " + all);
-  console.log("all_n = " + all_n);
+
+  sum = 0;
   for(var i = 0, j = 0; i < (all.length-1); i+=4, j++){
     var a_g = unit[j]*g[j];
-    console.log("load unit = "+unit[j]);
-    console.log("load g = ", g[j]);
-    console.log("unit*g = ", unit[j]*g[j]);
     sum_cal = unit[j]*calorie[j];
     if(all_n[j]!=undefined && all_n[j]!=""){
       recordtbf.innerHTML+="<tr><td id = 'name"+all_n[j]+"'>" + all[i] + "</td><td id = 'unit" + all_n[j] + "'>" + all[i+1] + "</td><td id ='g"+all_n[j]+ "'>" + a_g + "</td><td id = 'calorie"+all_n[j]+"'>"+ sum_cal +"卡</td><td><input type = 'button' id ='btn"+all_n[j]+"' onclick='advise(this)' value = '修改'><input type = 'button' id = 'delbtn"+all_n[j]+"' onclick='del(this)' value = '刪除'></td></tr>";
     }
+    sum += sum_cal;
+  }
+  localStorage.setItem(Name+"-today_eat", sum);
+  calculate();
+}
+
+function calculate(){
+  var Height = localStorage.getItem(Name + "-height");
+  var ideal = Height*Height*22/10000;
+  var sugest = ideal*30;
+  var dif = localStorage.getItem(Name+"-today_eat") - localStorage.getItem(Name+"-today_sport");
+  var photo = document.getElementById("shape");
+  if(dif<sugest) photo.src = "picture/shape1.png";
+  else if(dif>=sugest && dif<sugest+300) photo.src = "picture/shape2.png";
+  else if(dif>=sugest+300 && dif<sugest+600) photo.src = "picture/shape3.png";
+  else if(dif>sugest+600) photo.src = "picture/shape4.png";
+  console.log(dif);
+  console.log(sugest);
+}
+
+function readURL(input){
+  if(input.files && input.files[0]){
+    var imageTagID = input.getAttribute("targetID");
+    var reader = new FileReader();
+    reader.onload = function (e) {
+       var img = document.getElementById(imageTagID);
+       img.setAttribute("src", e.target.result);
+    }
+    reader.readAsDataURL(input.files[0]);
   }
 }
 
   (function(document) {
       'use strict';
-    
       // 建立 LightTableFilter
       var LightTableFilter = (function(Arr) {
-    
         var _input;
-    
         // 資料輸入事件處理函數
         function _onInputEvent(e) {
           _input = e.target;
@@ -156,7 +185,6 @@ function loadsearches(){
             });
           });
         }
-    
         // 資料篩選函數，顯示包含關鍵字的列，其餘隱藏
         function _filter(row) {
           var text = row.textContent.toLowerCase(), val = _input.value.toLowerCase();
@@ -173,14 +201,12 @@ function loadsearches(){
           }
         };
       })(Array.prototype);
-    
       // 網頁載入完成後，啟動 LightTableFilter
       document.addEventListener('readystatechange', function() {
         if (document.readyState === 'complete') {
           LightTableFilter.init();
         }
       });
-    
     })(document);
     
   window.addEventListener("load", start, false);

@@ -2,7 +2,7 @@ var sporttb, recordtb, record_info, record_n;
 var Name, Weight, calorie = [], n;
 var time = [], flag = [], consume_cal; // 單位:分鐘
 var today = new Date();
-var store;
+var store, sum = 0;
 var all=[], all_n=[];
 function start(){
   Name = localStorage.getItem("now");
@@ -10,7 +10,6 @@ function start(){
   sporttb = document.getElementById("sport");
   recordtb = document.getElementById("record");
   store = Name + "-s-" + today.getFullYear() + "/" + parseInt(today.getMonth()+1) + "/" + today.getDate();
-  //loadsearches();
   for(var i = 0; i <29; i++) {
     time[i] = 30; flag[i] = true;
   }
@@ -43,6 +42,8 @@ function start(){
       record_info += this.innerHTML+" "+time[n]+" "+calorie[n]+" ";
       localStorage.setItem(store, record_info);  
       localStorage.setItem(store+"n", record_n);
+      sum += consume_cal;
+      localStorage.setItem(Name+"-today_sport", sum);
       if(localStorage.getItem(store)) {
         all = localStorage.getItem(store).split(" ");
       all_n = localStorage.getItem(store+"n").split(" ");
@@ -111,12 +112,15 @@ function loadsearches(){
   localStorage.setItem(store, record_info);  
   localStorage.setItem(store+"n", record_n);
   recordtb.innerHTML = "";
+  sum = 0;
   for(var i = 0, j = 0; i < (all.length-1); i+=3, j++){
     consume_cal = Weight*calorie[j]*time[j]/60;
     if(all_n[j]!=undefined && all_n[j]!=""){
       recordtb.innerHTML+="<tr><td id = 'name"+all_n[j]+"'>" + all[i] + "</td><td id = 'time" + all_n[j] + "'>" + all[i+1] + "</td><td id ='consume"+all_n[j]+ "'>" + consume_cal.toFixed(1) + "卡</td><td><input type = 'button' id ='btn"+all_n[j]+"' onclick='advise(this)' value = '修改'><input type = 'button' id = 'delbtn"+all_n[j]+"' onclick='del(this)' value = '刪除'></td></tr>";
     }
+    sum += consume_cal;
   }
+  localStorage.setItem(Name+"-today_sport", sum);
 }
 (function(document) {
     'use strict';
