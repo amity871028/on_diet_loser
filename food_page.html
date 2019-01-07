@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>減肥吧！臭魯蛇</title>
+        <style>
+            body    {font-family:Microsoft JhengHei;
+                    background-color: #f9dddd;}
+            p       {font-family: 'Blippo',fantasy;
+                    text-align: center;
+                    font-size: 100px;}
+            .order-main    {position: absolute;
+                    top: 60%;left: 40%;}
+            .light-table-filter   {position: absolute;
+                    top: 44%;left: 19%;}
+            .but-search {position: absolute;
+                    top: 50%;left: 57%;}
+            .order-table    {position: absolute;
+                    top: 50%; left: 20%;}
+            .but-return {position: absolute;
+                    top: 10%;left: 20%;}
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src = "food_page.js">
+        </script>
+    </head>
+    <body>
+            <p>---Food---</p>
+            <div>
+                <table border="1" class="order-main">
+                    <thead>
+                        <tr>
+                            <th>今日食物</th>
+                            <th>單位</th>
+                            <th>重量(g)</th>
+                            <th>熱量(卡)</th>
+                            <th>按鈕</th>
+                        </tr>
+                    </thead>
+                    <tbody id = "recordf"></tbody>
+                </table>
+            </div>
+            <div>
+                <input type = "search" class="light-table-filter" data-table="order-table" placeholder="請輸入關鍵字">
+                <table class="order-table" border="1">
+                    <thead>
+                        <tr>
+                            <th>種類</th>
+                        </tr>
+                    </thead>
+                    <tbody id = "food"></tbody>
+                </table>
+            </div>
+            <a href="main_interface.html"><img class="but-return" src="picture\heart1.png" width="10%"></a>
+    </body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>減肥吧！臭魯蛇</title>
+        <style>
+            body    {background: #d2f1ff;}
+            .topcloud   {text-align: center;}
+            .btn    {text-align: center;
+                    position: absolute;
+                    top:80px;}
+            .street {text-align: center;
+                    position: absolute;
+                    bottom: 20px;}
+            #man    {position: absolute;
+                    bottom: 15px; left: 100px;}
+        </style>
+        <script>
+            var count = 0;
+            var street_count = 0;
+            function start(){
+                setInterval(man_run, 400);
+                setInterval(street, 400);
+            }
+
+            function man_run(){
+                count++;
+                if(count%2) document.getElementById("man").src = "picture\\man3.png";
+                else document.getElementById("man").src = "picture\\man2.png";
+            }
+
+            function street(){
+                street_count++;
+                document.getElementById("street").src = "picture\\street" + parseInt(street_count%6+2) + ".png";
+            }
+            window.addEventListener("load", start, false);
+        </script>
+    </head>
+    <body>
+        <div class = "btn">
+            <img src="picture\cloud1.png" width="10%">
+            <a href = "food_page.html"><img id = "foodbutton" src = "picture\food.png" style = "width: 15%;"></a>   
+            <a href = "water_page.html"><img id = "waterbutton" src = "picture\water.png" style = "width: 15%;"></a>   
+            <a href = "sport_page.html"><img id = "sportbutton" src = "picture\sport.png" style = "width: 15%;"></a>
+            <a href = "target_page.html"><img id = "targetbutton" src = "picture\target.png" style = "width: 15%;"></a> 
+            <a href = "report_page.html"><img id = "reportbutton" src = "picture\report.png" style = "width: 15%;"></a>
+            <img src="picture\cloud2.png" width="10%">
+        </div>
+        <p class="topcloud">
+            <img src="picture\cloud1.png" width="10%">
+        </p>
+        <div class = "street">
+            <a href = "login_page.html"><img src = "picture\man2.png" id = "man" height="150%"></a>
+            <img src = "picture\street2.png" id = "street" width = "100%">
+        </div>
+    </body>
+</html>

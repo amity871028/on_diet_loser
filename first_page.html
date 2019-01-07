@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>減肥吧！臭魯蛇</title>
+        <script>
+            function start(){}
+            function login(){
+                if(localStorage.length!=0) window.location.href = "login_page.html";
+                else window.location.href = "no_login_page.html";
+            }
+            addEventListener("load", start, false);
+        </script>
+    </head>
+    <body>
+        <input type ="button" onclick="login()" value = "DEMO">
+    </body>
+</html>

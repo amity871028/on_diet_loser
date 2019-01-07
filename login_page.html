@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>減肥吧！臭魯蛇</title>
+        <style>
+             body    {background-color: #ffff77;
+                    font-family: 'Blippo',fantasy;}
+            .log    {font-size: 100px;
+                    top: 0%;left: 38%;}
+            .grandma{position: absolute; top: 50%; left: 400px;}
+            .talk   {position: absolute; top: 35%; left: 600px;}
+            p       {position: absolute; top: 47%; left: 690px;}
+            div     {position: absolute; top: 50%; left: 700px;}
+            .but    {top: 60%;}
+        </style>
+        <script>
+            var all_name, yesbtn, nobtn;
+            var names = [];
+            function start() {
+                
+                all_name = document.getElementById("all_name");
+                loadsearches();
+                for(var i in names){
+                    all_name.innerHTML += "<option value='"+ names[i] + "'>" + names[i] + "</option>";
+                }
+                var selectOption = all_name.options[all_name.selectedIndex];;
+                all_name.onchange = function(){ selectOption = all_name.options[all_name.selectedIndex]; };
+                document.getElementById("yes").addEventListener("click", function(){ 
+                    localStorage.setItem("now", selectOption.value);
+                    window.location.href = "main_interface.html" }, false);
+                document.getElementById("no").addEventListener("click", function(){ window.location.href = "no_login_page.html"}, false);
+                
+            }
+
+            function loadsearches(){
+                var j = 0;
+                for(var i = 0; i< localStorage.length; i++){
+                    var find = localStorage.key(i);
+                    if(find.match("-name")) names[j++] = localStorage.getItem(find);
+                }
+            }
+            window.addEventListener("load", start, false);
+        </script>
+    </head>
+    <body>
+        <img src = "picture\grandma3.png" class = "grandma" height="200px">
+        <img src = "picture\talk.png" class= "talk" height="250px">
+        <p class="log">-Log in-</p>
+        <p>哎呀～<br>
+        是<select id = "all_name"></select>寶貝<br>
+        回來了嗎～</p>
+        <div class="but">
+            <input type = "button" id = "yes" value = "是">
+            <input type = "button" id = "no" value = "否">
+        </div>
+    </body>
+</html>

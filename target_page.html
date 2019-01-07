@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>減肥吧！臭魯蛇</title>
+        <style>
+            body    {font-family:Microsoft JhengHei;
+                    background-color: #ffdd8d;}
+            .number {height: 100px;}
+            .flag   {position: relative; left: 20px;}
+            p       {font-family: 'Blippo',fantasy;
+                    text-align: center;
+                    font-size: 100px;}
+            .num    {position: absolute;
+                    top: 40%;left: 38%;
+                    font-size: 40px;}
+            .ref    {font-family: 'Blippo',fantasy;
+                    font-size: 50px;
+                    position: absolute;
+                    top: 65%;left: 41%;}
+            .table-fat  {position: absolute;
+                    top: 85%;left: 40%;}
+            .table-gold {position: absolute;
+                    top: 130%;left: 41%;}
+            .but-return {position: absolute;
+                    top: 10%;left: 20%;}
+        </style>
+        <script>
+            var kg, target_weight, editbtn;
+            var Name;
+            function start(){
+                kg = document.getElementById("kg");
+                target_weight = document.getElementById("target_weight");
+                target_pic();
+                golden_ratio();
+
+                editbtn = document.getElementById("edit");
+                editbtn.addEventListener("click", edit, false);
+            }
+
+            function target_pic(){
+                target_weight.innerHTML = "";
+                Name = localStorage.getItem("now");
+                var tar = localStorage.getItem(Name + "-target");
+                var tmp = tar;
+                var a = [];
+                for(var i=0; tmp > 0; i++){
+                    a[i] = parseInt(tmp%10);
+                    tmp /= 10;
+                    tmp = parseInt(tmp);
+                }
+                for(var i = a.length-1; i>=0; i--){
+                    target_weight.innerHTML += "<img src = 'picture\\" + a[i] + ".png' class = 'number'>";
+                }
+            }
+
+            function golden_ratio(){
+                var Height = localStorage.getItem(Name + "-height");
+                var Sex = localStorage.getItem(Name + "-sex");
+                var grtable = document.getElementById("golden_ratio");
+                if(Sex == 'girl'){
+                    var high_hip = Height*0.15;
+                    var bust = Height*0.53;
+                    var waist_min = Height*0.37;
+                    var waist_max = Height*0.43;
+                    var hip = Height*0.54;
+                    var abdomen_circle = Height*0.457; // 腹圍
+                    var thigh_circle = Height*0.26+7.8;
+                    var calf_circle = Height*0.21;
+                    grtable.innerHTML = " <tr><th>上臂圍(身高x0.15)</th><td>" + high_hip.toFixed(2) + "</td></tr>" + 
+                         " <tr><th>胸圍(身高x0.53)</th><td>" + bust.toFixed(2) + "</td></tr>" + 
+                         " <tr><th>腰圍下限(身高x0.37)</th><td>" + waist_min.toFixed(2) + "</td></tr>" + 
+                         " <tr><th>腰圍上限(身高x0.43)</th><td>" + waist_max.toFixed(2) + "</td></tr>" +
+                         " <tr><th>臀圍(身高x0.54)</th><td>" + hip.toFixed(2) + "</td></tr>" + 
+                         " <tr><th>腹圍(身高x0.457)</th><td>" + abdomen_circle.toFixed(2) + "</td></tr>" + 
+                         " <tr><th>大腿圍(身高x0.26+7.8)</th><td>" + thigh_circle.toFixed(2) + "</td></tr>" + 
+                         " <tr><th>小腿圍(身高 x0.21)</th><td>" + calf_circle.toFixed(2) + "</td></tr>" ;
+                }
+                else{
+                    var hip = Height*0.54;
+                    var bust = Height*0.53;
+                    var waist = Height*0.42;
+                    var thigh = Height*0.3;
+                    var calf = Height*0.26;
+                    var thigh_circle = Height*0.29-0.3;
+                    var calf_circle = Height*0.2-0.21;
+                    var ankle = Height*0.118;
+                    grtable.innerHTML = "<tr><th>標準臀圍(身高x0.54)</th><td>" + hip.toFixed(2) + "</td></tr>" +
+                        "<tr><th>標準胸圍(身高x0.53)</th><td>" + bust.toFixed(2) + "</td></tr>" +
+                        "<tr><th>標準腰圍(身高x0.42)</th><td>" + waist.toFixed(2) + "</td></tr>" +
+                        "<tr><th>標準大腿長(身高x0.3)</th><td>" + thigh.toFixed(2) + "</td></tr>" +
+                        "<tr><th>標準小腿長(身高x0.26)</th><td>" + calf.toFixed(2) + "</td></tr>" +
+                        "<tr><th>大腿圍(身高x0.29-0.3)</th><td>" + thigh_circle.toFixed(2) + "</td></tr>" +
+                        "<tr><th>小腿圍(身高x0.2-0.21)</th><td>" + calf_circle.toFixed(2) + "</td></tr>" +
+                        "<tr><th>腳踝尺寸(身高x0.118)</th><td>" + ankle.toFixed(2) + "</td></tr>" ;
+                }
+            }
+
+            function edit(){
+                editbtn.style.display = "none";
+                var tmp = target_weight.innerHTML;
+                target_weight.innerHTML = "<input type = 'text' id = 'new_tar'>";
+                target_weight.innerHTML += "<input type = 'button' id = 'advise' value = '修改'>";
+                target_weight.innerHTML += "<input type = 'button' id = 'cancel' value = '取消'>";
+                
+                document.getElementById("advise").addEventListener("click", advise, false);
+                document.getElementById("cancel").addEventListener("click", function(){target_weight.innerHTML = tmp; editbtn.style.display = ""}, false);
+            }
+
+            function advise(){
+                var new_tar = document.getElementById("new_tar");
+                if(new_tar.value == "") alert("請輸入數字!");
+                else{
+                    localStorage.setItem(Name + "-target", new_tar.value);
+                    target_pic();
+                    editbtn.style.display = "";
+                }
+            }
+            window.addEventListener("load", start, false);
+        </script>
+    </head>
+    <body>
+            <p>---Goal---</p>
+            <p class="num">
+                體重 <span id = "kg"></span><span id = "target_weight"></span><img src = "picture\flag.png" id = "edit" class="flag" width="50px">
+            </p>            
+            <p class="ref">-Reference-</p>
+                <table border="1" class="table-fat">
+                    <caption>BMI</caption>
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <th>身體質量指數(BMI)(kg/m<sup>2</sup>)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>體重過輕</th>
+                            <td>BMI &lt; 18.5</td>
+                        </tr>
+                        <tr>
+                            <th>正常範圍</th>
+                            <td>18.5 ≦ BMI &lt; 24</td>
+                        </tr>
+                        <tr>
+                            <th>體重過重</th>
+                            <td>24 ≦ BMI &lt; 27</td>
+                        </tr>
+                        <tr>
+                            <th>輕度肥胖</th>
+                            <td>27 ≦ BMI &lt; 30</td>
+                        </tr>
+                        <tr>
+                            <th>中度肥胖</th>
+                            <td>30 ≦ BMI &lt; 35</td>
+                        </tr>
+                        <tr>
+                            <th>重度肥胖</th>
+                            <td>BMI ≧ 35</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table border="1" class="table-gold">
+                    <caption>你的黃金比例</caption>
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <th>單位(cm)</th>
+                        </tr>
+                    </thead>
+                    <tbody id = "golden_ratio"></tbody>
+                </table>
+                <a href="main_interface.html"><img class="but-return" src="picture\heart4.png" width="10%"></a>
+    </body>
+</html>

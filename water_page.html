@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>減肥吧！臭魯蛇</title>
+        <style>
+            body    {font-family:Microsoft JhengHei;
+                    background-color: #f3d8ff;}
+            div     {text-align: center;}
+            img     {float: left;}
+            div#text   {float: left; margin-left: 20px;}
+            .water  {font-family: 'Blippo',fantasy;
+                    text-align: center;
+                    font-size: 100px;}
+            .but-return {position: absolute;
+                    top: 10%;left: 20%;}
+        </style>
+        <script src="water_page.js"></script>
+    </head>
+    <body>
+        <p class="water">---Water---</p>
+        <div>
+            <img src = "picture\fishbowl_halftransparent.png" id = "fishbowl" width="80%">
+            <div id = "text">
+                <p>要倒多少水進去呢～</p>
+                <p id = "crt_p"></p>
+                <input id = "howmuch" type = "text" value = "300">
+                <br>
+                <input id = "add" type = "submit" value = "倒">
+                <input id = "returnpage" type = "button" value = "返回">
+            </div>
+            <input type = "button" onclick="refresh()" value="新的一天～(更新水量)">
+        </div>
+        <a href="main_interface.html"><img class="but-return" src="picture\heart2.png" width="10%"></a>
+    </body>
+</html>

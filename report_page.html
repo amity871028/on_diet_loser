@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>減肥吧！臭魯蛇</title>
+        <style type="text/css">
+            body    {font-family:Microsoft JhengHei;
+                    background-color: #9fdc9f;
+                    text-align: center;}
+            .report {font-family: 'Blippo',fantasy;
+                    position: absolute;
+                    top: 30px;left: 410px;
+                    font-size: 100px;}
+            #flot-placeholder{z-index: 1;
+                    position: absolute;
+                    width:350px;height:300px;
+                    top: 330px;left: 460px;} 
+            .blank  {z-index: 0;
+                    position: absolute;
+                    height:273px; width:318px;
+                    top: 335px;left: 490px;}
+            .daily  {position: absolute;
+                    top: 650px;left: 490px;}     
+            .but-return {position: absolute;
+                    top: 10%;left: 20%;}        
+        </style>
+         <script type="text/javascript" src="http://www.pureexample.com/js/lib/jquery-1.8.3.min.js"></script>
+         <script type="text/javascript" src="http://www.pureexample.com/js/flot/jquery.flot.min.js"></script>
+         <script type="text/javascript" src="jquery.flot.time.js"></script>
+        <script src="report_page.js"></script>
+    </head>
+    <body>
+            <p class="report">---Report---</p>
+            <p>
+                <div id="flot-placeholder"></div>
+                <img class="blank" src="picture\blank.png">
+            </p>
+            <br>
+            <div class="daily">
+                今日體重：<input type = "text" id = "weight" placeholder="請輸入體重"><input type = "button" id = "weightbutton" value="確定">
+            </div> 
+            <a href="main_interface.html"><img class="but-return" src="picture\heart5.png" width="10%"></a>
+    </body>
+</html>

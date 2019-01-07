@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>減肥吧！臭魯蛇</title>
+        <style>
+            body    {font-family:Microsoft JhengHei;
+                    background: #FFFF77;}
+            .grandma{position: absolute; top: 50%; left: 200px;}
+            .talk   {position: absolute; top: 35%; left: 400px;}
+            p       {position: absolute; top: 50%; left: 470px;}
+            div     {position: absolute; top: 50%; left: 750px;}
+            .register   {font-family: 'Blippo',fantasy;
+                        top: 0%;left: 35%;
+                        font-size: 100px;}
+        </style>
+        <script src = "no_login_page.js"></script>
+    </head>
+    <body>
+        <!--<img src = "picture\ .png">-->
+        <p class="register">-Register-</p>
+        <img src = "picture\grandma2.png" class = "grandma" height="200px">
+        <img src = "picture\talk.png" class = "talk" height="300px">
+        <p>乖孫呀～<br>
+            好久不見呀～<br>
+            阿嬤都快忘記你叫甚麼了～
+        </p>
+        <div>
+            <label>姓名：<input id = "Name" type = "text" autofocus></label><br>
+            <label>性別：<input name = "sex" id = "boy" type = "radio" checked >男</label>
+            <label><input name = "sex" id = "girl" type = "radio">女</label>
+            <label><input name = "sex" id = "other" type = "radio" >其他</label><br>
+            <label>生日：<input id = "birth" type = "date"></label><br>
+            <label>身高(cm)：<input id = "height" type = "number" value = "160" ></label><br>
+            <label>體重(kg)：<input id = "weight" type = "number" value = "60" ></label><br>
+            <label>目標體重(kg)：<input id = "target" type = "number" value = "60" ></label>
+            <input id = "submit" type="button" value="確定">
+        </div>
+    </body>
+</html>
