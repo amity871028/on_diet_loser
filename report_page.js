@@ -6,22 +6,16 @@ function record(){
     for(var i = 0; i < localStorage.length; i++){
         var find = localStorage.key(i);
         var str = find.indexOf("-w-");
-        
         if(find.match("-w-")) {
             var ymd = find.substring(str+3, find.length).split("/");
             //data[j][0] = gd(ymd[0], ymd[1]-1, ymd[2])-57900000;
             tmp[j] = ymd[2];
             tmpv[j] = localStorage.getItem(find);
-            console.log(j);
-            console.log(tmp);
-            console.log(tmpv);
             j++;
             if(j==7){
 
             }
         }
-        
-        
     }
     for(var i = 0; i<j; i++){
         for(var k = i+1; k< j; k++){
@@ -38,8 +32,7 @@ function record(){
     for(var i = 0; i<7; i++){
         data[i][1] = tmpv[i];
         if(i>=j) data[i][1] = tmpv[j-1];
-    }   
-    console.log("後->" + tmp + "~" + tmpv);
+    }
 }
 function gd(year, month, day) {
     return new Date(year, month, day).getTime();
