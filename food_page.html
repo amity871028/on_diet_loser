@@ -21,6 +21,8 @@
                     top: 50%;left: 70%;}
             .add_photo{position: absolute;
                     top: 23%;left: 75.5%;}
+            .add    {position: absolute;
+                    top: 44%;left: 30%;}
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src = "food_page.js">
@@ -38,11 +40,11 @@
                 <table border="1" class="order-main">
                     <thead>
                         <tr>
-                            <th>今日食物</th>
+                            <th style="width: 130px;">今日食物</th>
                             <th>單位</th>
                             <th>重量(g)</th>
                             <th>熱量(卡)</th>
-                            <th>按鈕</th>
+                            <th style="width: 87px;">按鈕</th>
                         </tr>
                     </thead>
                     <tbody id = "recordf"></tbody>
@@ -59,6 +61,7 @@
                     <tbody id = "food"></tbody>
                 </table>
             </div>
+            <input type = "button" class ="add" onclick="add()" value="自行新增選項">
             <a href="main_interface.html"><img class="but-return" src="picture\heart1.png" width="10%"></a>
     </body>
 </html>

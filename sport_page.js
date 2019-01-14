@@ -1,127 +1,170 @@
-var sporttb, recordtb, record_info, record_n;
-var Name, Weight, calorie = [], n;
-var time = [], flag = [], consume_cal; // 單位:分鐘
+var sporttb, recordtb, n;
+var Name, Weight, calorie = [];
+var time = 30, flag = []; // 單位:分鐘
 var today = new Date();
-var store, sum = 0;
-var all=[], all_n=[];
+var all = [], all_n = [];
 function start(){
   Name = localStorage.getItem("now");
   Weight = localStorage.getItem(Name + "-weight");
   sporttb = document.getElementById("sport");
   recordtb = document.getElementById("record");
+
   store = Name + "-s-" + today.getFullYear() + "/" + parseInt(today.getMonth()+1) + "/" + today.getDate();
-  for(var i = 0; i <29; i++) {
-    time[i] = 30; flag[i] = true;
-  }
+  for(var i=0; i<40; i++) flag[i] = true;
+
+ 
   $.getJSON("https://api.myjson.com/bins/w5mnk", function(result){
-    var i = 0;
     $.each( result, function( key, val ) {
-        if(i%2 == 0) sporttb.innerHTML += "<tr><td>" + key + "</td></tr>";
-        else sporttb.innerHTML += "<tr class = 'odd'><td>" + key + "</td></tr>";
-        i++;
+        if(val[0]%2) sporttb.innerHTML += "<tr class = 'even'><td id = 'name" + val[0] + "'>" + key + "</td></tr>";
+        else sporttb.innerHTML += "<tr class = 'odd'><td id = 'name" + val[0] + "'>" + key + "</td></tr>";
+        calorie[val[0]] = val[1];
+       
     });
-    $("td").click(function(){
-      var now = this.innerHTML;
-      $.each( result, function( key, val ) {
+    $("[id^=name]").click(function(){
+        n = this.id.substring(4, this.id.length);
+        var obj = this;
+        addprocess(obj);
         
-        if(key == now) {
-          n = val[0];
-          calorie[n] = val[1];
-        }
-      });
-      if(localStorage.getItem(store)==null) {
-        record_info=""; record_n="";
-      }
-      else{
-        record_info=localStorage.getItem(store);
-        record_n=localStorage.getItem(store+"n");
-      }
-      consume_cal = Weight*calorie[n]*time[n]/60;
-      recordtb.innerHTML+="<tr><td id ='name" + n + "'>" + this.innerHTML + "</td><td id = 'time" + n + "'>" + time[n] + "</td><td id ='consume"+n+ "'>" + consume_cal.toFixed(1) + "卡</td><td><input type = 'button' id ='btn"+n+"' onclick='advise(this)' value = '修改'><input type = 'button' id = 'delbtn"+n+"' onclick='del(this)' value = '刪除'></td></tr>";
-      record_n+= n +" ";
-      record_info += this.innerHTML+" "+time[n]+" "+calorie[n]+" ";
-      localStorage.setItem(store, record_info);  
-      localStorage.setItem(store+"n", record_n);
-      sum += consume_cal;
-      localStorage.setItem(Name+"-today_sport", sum);
-      if(localStorage.getItem(store)) {
-        all = localStorage.getItem(store).split(" ");
-      all_n = localStorage.getItem(store+"n").split(" ");
-      }
-    });
-  });
-  if(localStorage.getItem(store)) {
-    all = localStorage.getItem(store).split(" ");
-  all_n = localStorage.getItem(store+"n").split(" ");
-  }
-  loadsearches();
-}
-var timetext, Newtime;
-function advise(e){
-  n = e.id.substring(3, e.id.length);
-  if(flag[n]){
-    timetext = document.getElementById("time"+n);
-    timetext.innerHTML = "<input type = 'text' id = 'newtime'>";
-    Newtime = document.getElementById("newtime");
-    Newtime.value = time[n];
-    flag[n] = false;
-  }
-  else{
-    time[n] = Newtime.value;
-    timetext.innerHTML = time[n];
-    consume_cal = Weight*calorie[n]*time[n]/60;
-    document.getElementById("consume"+n).innerHTML = consume_cal.toFixed(1);
-    flag[n] = true;
-    all[3*n] = document.getElementById("name"+n).innerHTML;
-    all[3*n+1] = time[n];
-    all_n[n] = n;
+    }); 
     loadsearches();
-  }
+  });
 }
 
-function del(e){
-  var del_n = e.id.substring(6, e.id.length);
-  var r;
-  for(var i = 0; i < all_n.length; i++){
-    if(del_n == all_n[i]) {
-      r = i;  break;
+function addprocess(e){
+    var todo=true;
+    for(var i=0; i<all.length; i+=3) {
+        if(e.innerHTML == all[i]) {
+            todo=false;
+            break;
+        }
     }
-  }
-  for(var i =3*r, j=r ; i< all_n.length-2; i+=3, j++){
-    all[i] = all[i+3];
-    all[i+1] = all[i+4];
-    all[i+2] = all[i+5];
-    all_n[j] = all_n[j+1];
-  }
-  all[i]=""; all[i+1]=30; all[i+2]="";
-  all_n[j]="";
-  all_n.length -= 1; 
-  loadsearches();
+    if(todo){
+        if(localStorage.getItem(store)){
+            all = localStorage.getItem(store).split(" ");
+            all_n = localStorage.getItem(store+"n").split(" ");
+        }
+        var len = all_n.length;
+        all[len*3] = e.innerHTML;
+        all[len*3+1] = time;
+        all[len*3+2] = calorie[n];
+        all_n[len] = n;
+        
+        var storetext="", storen="";
+        
+        for(var i=0; i<all.length; i++) {
+            if(i == all.length-1) storetext+=all[i];
+            else storetext+=all[i]+" ";
+        }
+        for(var i=0; i<all_n.length; i++) {
+            if(i == all_n.length-1) storen+=all_n[i];
+            else storen+=all_n[i] + " ";
+        }
+        localStorage.setItem(store,storetext);
+        localStorage.setItem(store+"n",storen);
+        loadsearches();
+    }
+    else alert("已經新增過囉！");
+}
+var Newtime;
+function update(e){
+    n = e.id.substring(3, e.id.length);
+    if(flag[n]){
+        document.getElementById("time"+n).innerHTML = "<input type='text' id='newtime' autofocus>";
+        flag[n] = false;
+    }
+    else{
+        Newtime = document.getElementById("newtime").value; 
+        document.getElementById("time"+n).innerHTML = Newtime;
+        var tmp;
+        for(var i=0; i<all_n.length; i++){
+            if(all_n[i]==n) {
+                tmp = i;    break;
+            }
+        }
+        all[3*i+1] = Newtime;
+        var storetext="";
+        for(var i=0; i<all.length; i++) {
+            if(i == all.length-1) storetext+=all[i];
+            else storetext+=all[i]+" ";
+        }
+        localStorage.setItem(store,storetext);
+        flag[n] = true;
+        loadsearches();
+    }
+}
+
+function remove(e){
+    n = e.id.substring(3, e.id.length);
+    var tmp;
+    for(var i=0; i<all_n.length; i++){
+        if(all_n[i]==n) {
+            tmp = i;    break;
+        }
+    }
+    var storetext="", storen="";
+    if(tmp == all_n.length-1) all_n.length--;
+    for(var i=0; i<all_n.length; i++) {
+        if(i==tmp) continue;
+        if(i == all_n.length-1) {
+            storetext+=all[3*i]+" "+all[3*i+1]+" "+all[3*i+2];
+            storen+=all_n[i];
+        }
+        else {
+            storetext+=all[3*i]+" "+all[3*i+1]+" "+all[3*i+2]+" ";
+            storen+=all_n[i]+" ";
+        }
+    }
+    if(storen == "") {
+        localStorage.removeItem(store+"n");
+        localStorage.removeItem(store);
+        all = [];
+        all_n = [];
+    }
+    else{
+        localStorage.setItem(store,storetext);
+        localStorage.setItem(store+"n",storen);
+    }
+    loadsearches();
 }
 
 function loadsearches(){
-  record_info=""; record_n="";
-  for(var i=0, j=0; i<all.length-1; i+=3, j++){
-    if(all[i]!=""){
-      record_info += all[i]+" "+all[i+1]+" "+all[i+2]+" ";
-      time[j] = all[i+1];
-      calorie[j] = all[i+2];
-      record_n += all_n[j] + " ";
+    recordtb.innerHTML="";
+    if(localStorage.getItem(store)){
+        all = localStorage.getItem(store).split(" ");
+        all_n = localStorage.getItem(store+"n").split(" ");
     }
-  }
-  localStorage.setItem(store, record_info);  
-  localStorage.setItem(store+"n", record_n);
-  recordtb.innerHTML = "";
-  sum = 0;
-  for(var i = 0, j = 0; i < (all.length-1); i+=3, j++){
-    consume_cal = Weight*calorie[j]*time[j]/60;
-    if(all_n[j]!=undefined && all_n[j]!=""){
-      recordtb.innerHTML+="<tr><td id = 'name"+all_n[j]+"'>" + all[i] + "</td><td id = 'time" + all_n[j] + "'>" + all[i+1] + "</td><td id ='consume"+all_n[j]+ "'>" + consume_cal.toFixed(1) + "卡</td><td><input type = 'button' id ='btn"+all_n[j]+"' onclick='advise(this)' value = '修改'><input type = 'button' id = 'delbtn"+all_n[j]+"' onclick='del(this)' value = '刪除'></td></tr>";
+    var sum = 0;
+    for(i=0; i<all_n.length; i++){
+      if(all_n[i]=="") break;
+      var consume_cal = Weight*all[3*i+1]*all[3*i+2]/60;
+      recordtb.innerHTML+="<tr><td>"+all[3*i]+"</td><td id = 'time"+all_n[i]+"'>"+all[3*i+1] +"</td><td>"+consume_cal.toFixed(1)+"</td><td><input type='button' id='btn"+all_n[i]+"' onclick='update(this)' value='修改'><input type = 'button' id='del"+all_n[i]+"' onclick='remove(this)' value='刪除'><tr>";
+      sum += parseFloat(consume_cal);
     }
-    sum += consume_cal;
-  }
-  localStorage.setItem(Name+"-today_sport", sum);
+    localStorage.setItem(Name + "-today_sport", sum);
 }
+
+function add(){
+    var selfname, selftime, selfconsume_cal;
+    selfname = prompt("請輸入活動名稱：");
+    selfconsume_cal = prompt("請輸入每30分鐘消耗卡路里：");
+    if(selfname != "" && selfconsume_cal != "" && selfname != null  && selfconsume_cal != null){
+        if(isNaN(selfconsume_cal)) alert("請輸入正確格式！");
+        else{
+            for(var i = 29; i < 40; i++){
+                if($("#time"+i).length == 0) {
+                    n = i;  break;
+                }
+                if(i==39) alert("抱歉自行新增只能給這麼多了！"); 
+            }
+            var tmp = document.createElement("td");
+            tmp.innerHTML = "<tr><td id = 'name" + n + "'>" + selfname + "</td></tr>";
+            calorie[n] = Number(selfconsume_cal*2/Weight).toFixed(1);
+            var obj = tmp;
+            addprocess(obj);
+        }
+    }
+}
+
 (function(document) {
     'use strict';
     // 建立 LightTableFilter
@@ -159,5 +202,4 @@ function loadsearches(){
       }
     });
   })(document);
-  
 window.addEventListener("load", start, false);

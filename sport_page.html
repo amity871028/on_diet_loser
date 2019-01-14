@@ -7,6 +7,8 @@
             body    {font-family:Microsoft JhengHei;
                     background-color: #faf2bb;;}
             .odd    {background-color: gray; color: white;}
+            .odd:hover{background-color: #0066FF;}
+            .even:hover{background-color: #CCEEFF;}
             p       {font-family: 'Blippo',fantasy;
                     text-align: center;
                     font-size: 100px;}
@@ -24,6 +26,8 @@
                     top: 5%;left: 78%;}
             .chat       {position: absolute;
                     top: 25%;left: 83%;}
+            .add    {position: absolute;
+                    top: 44%;left: 30%;}
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="sport_page.js"></script>
@@ -38,10 +42,10 @@
             <table border="1" class="table1">
                 <thead>
                     <tr>
-                        <th>今日活動</th>
+                        <th style="width: 180px;">今日活動</th>
                         <th>持續分鐘數</th>
                         <th>消耗卡路里</th>
-                        <th>按鈕</th>
+                        <th style="width: 87px;">按鈕</th>
                     </tr>
                 </thead>
                 <tbody id = "record"></tbody>
@@ -58,6 +62,7 @@
                 <tbody id = "sport"></tbody>
             </table>
         </div>
+        <input type = "button" class ="add" onclick="add()" value="自行新增選項">
         <a href="main_interface.html"><img class="but-return" src="picture\heart3.png" width="10%"></a>
     </body>
 </html>

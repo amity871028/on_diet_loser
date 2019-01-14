@@ -13,32 +13,32 @@
                     font-size: 100px;}
             #flot-placeholder{z-index: 1;
                     position: absolute;
-                    width:350px;height:300px;
-                    top: 330px;left: 460px;} 
-            .blank  {z-index: 0;
-                    position: absolute;
-                    height:266px; width:308px;
-                    top: 337px;left: 483px;}
+                    width:5%;height:5%;} 
+            .control{ position: absolute;
+                    top: 50%;left: 27%;
+                    width: 600px; height: 800px;}    
             .daily  {position: absolute;
-                    top: 650px;left: 490px;}     
+                    top: 600px;left: 410px;}     
             .but-return {position: absolute;
                     top: 10%;left: 20%;}        
         </style>
          <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-         <script type="text/javascript" src="jquery.flot.min.js"></script>
-         <script type="text/javascript" src="jquery.flot.time.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
         <script src="report_page.js"></script>
     </head>
     <body>
             <p class="report">---Report---</p>
             <p>
-                <div id="flot-placeholder"></div>
-                <img class="blank" src="picture\blank.png">
+                    <div class="control">
+                <canvas  id="flot-placeholder"></canvas>
+        </div>
+                
             </p>
             <br>
             <div class="daily">
                 今日體重：<input type = "text" id = "weight" placeholder="請輸入體重"><input type = "button" id = "weightbutton" value="確定">
-            </div> 
+                (新增完麻煩刷新頁面！)
+        　　</div> 
             <a href="main_interface.html"><img class="but-return" src="picture\heart5.png" width="10%"></a>
     </body>
 </html>

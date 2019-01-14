@@ -1,149 +1,176 @@
-var foodtb, recordtbf, record_info, record_n;
-var Name, Weight, unitname, g = [], calorie = [], n;
+var foodtb, recordtb, n;
+var Name, Weight, unitname, g = [], calorie = [];
 var unit = [], flag = [], sum_cal;
 var today = new Date();
-var store, sum = 0;
 var all=[], all_n=[];
 function start(){
   document.getElementById("preview_progressbarTW_img").src = "picture\\empty.png";
   Name = localStorage.getItem("now");
   Weight = localStorage.getItem(Name + "-weight");
   foodtb = document.getElementById("food");
-  recordtbf = document.getElementById("recordf");
-  store = Name + "-f-" + today.getFullYear() + "/" + parseInt(today.getMonth()+1) + "/" + today.getDate();
-  //loadsearches();
-  for(var i = 0; i <185; i++) {
-    flag[i] = true;
-  }
-  $.getJSON("https://api.myjson.com/bins/u1ry0", function(result){
-    var i = 0;
-    $.each( result, function( key, val ) {
-        if(i%2 == 0) foodtb.innerHTML += "<tr><td>" + key + "</td></tr>";
-        else foodtb.innerHTML += "<tr class = 'odd'><td>" + key + "</td></tr>";
-        i++;
-    });
-    $("td").click(function(){
-      var now = this.innerHTML;
-      $.each( result, function( key, val ) {
-        
-        if(key == now) {
-          n = val[0];
-          unitname = val[1];
-          unit[n] = (parseInt(val[1]));
-          if(isNaN(unit[n])) unit[n] = 1;
-          g[n] = val[2];
-          calorie[n] = val[3];
-        }
-    });
-    if(localStorage.getItem(store)==null) {
-      record_info=""; record_n="";
-    }
-    else{
-      record_info=localStorage.getItem(store);
-      record_n=localStorage.getItem(store+"n");
-    }
-    sum_cal = unit[n]*calorie[n];
-    if(g[n] == "") recordtbf.innerHTML+="<tr><td id ='name" + n + "'>" + this.innerHTML + "</td><td id = 'unit" + n + "'>" + unitname + "</td><td id ='g"+n+ "' style='text-align: center'>" + "/" + "</td><td id ='calorie"+n+ "'>" + sum_cal + "卡</td><td><input type = 'button' id ='btn"+n+"' onclick='advise(this)' value = '修改'><input type = 'button' id = 'delbtn"+n+"' onclick='del(this)' value = '刪除'></td></tr>";
-    else recordtbf.innerHTML+="<tr><td id ='name" + n + "'>" + this.innerHTML + "</td><td id = 'unit" + n + "'>" + unitname + "</td><td id ='g"+n+ "'>" + g[n] + "</td><td id ='calorie"+n+ "'>" + sum_cal + "卡</td><td><input type = 'button' id ='btn"+n+"' onclick='advise(this)' value = '修改'><input type = 'button' id = 'delbtn"+n+"' onclick='del(this)' value = '刪除'></td></tr>";
-    record_n+= n +" ";
-    record_info += this.innerHTML+" "+unit[n]+" "+g[n]+" "+calorie[n]+" ";
-    localStorage.setItem(store, record_info);  
-    localStorage.setItem(store+"n", record_n);
-    sum+=sum_cal;
-    localStorage.setItem(Name+"-today_eat", sum);
-    calculate();
-    if(localStorage.getItem(store)) {
-      all = localStorage.getItem(store).split(" ");
-    all_n = localStorage.getItem(store+"n").split(" ");
-    }
-    });
-  });
-  if(localStorage.getItem(store)) {
-    all = localStorage.getItem(store).split(" ");
-  all_n = localStorage.getItem(store+"n").split(" ");
-  }
-  loadsearches(); 
-  calculate();
-}
-var unittext, gtext, Newunit;
-function advise(e){
-  n = e.id.substring(3, e.id.length);
-  if(flag[n]){
-    unittext = document.getElementById("unit"+n);
-    gtext = document.getElementById("g"+n);
-    unittext.innerHTML = "<input type = 'text' id = 'newunit'>";
-    Newunit = document.getElementById("newunit");
-    Newunit.value = unit[n];
-    flag[n] = false;
-  }
-  else{
-    unit[n] = Newunit.value ;
-    unittext.innerHTML = unit[n];
-    var a_g = unit[n]*g[n];
-    sum_cal = unit[n]*calorie[n];
-    document.getElementById("g"+n).innerHTML = a_g;
-    document.getElementById("calorie"+n).innerHTML = sum_cal.toFixed(1);
-    flag[n] = true;
-    all[4*(n-1)] = document.getElementById("name"+n).innerHTML;
-    all[4*(n-1)+1] = unit[n];
-    all[4*(n-1)+2] = g[n];
-    all[4*(n-1)+3] = calorie[n];
-    all_n[n-1] = n;
-    loadsearches();  
-    calculate();
-  }
+  recordtb = document.getElementById("recordf");
   
-}
-
-function del(e){
-  var del_n = e.id.substring(6, e.id.length);
-  var r;
-  for(var i = 0; i < all_n.length; i++){
-    if(del_n == all_n[i]) {
-      r = i;  break;
-    }
-  }
-  for(var i =4*r, j=r ; i< all_n.length-2; i+=4, j++){
-    all[i] = all[i+4];
-    all[i+1] = all[i+5];
-    all[i+2] = all[i+6];
-    all[i+3] = all[i+7];
-    all_n[j] = all_n[j+1];
-  }
-  all[i]=""; all[i+1]=""; all[i+2]=""; all[i+3]="";
-  all_n[j]="";
-  all_n.length -= 1; 
+  store = Name + "-f-" + today.getFullYear() + "/" + parseInt(today.getMonth()+1) + "/" + today.getDate();
+  for(var i = 0; i <200; i++) flag[i] = true;
+  $.getJSON("https://api.myjson.com/bins/u1ry0", function(result){
+    $.each( result, function( key, val ) {
+        if((val[0]-1)%2) foodtb.innerHTML += "<tr class = 'even'><td id = 'name" + parseInt(val[0]-1) + "'>" + key + "</td></tr>";
+        else foodtb.innerHTML +=  "<tr class = 'odd'><td id = 'name" + parseInt(val[0]-1) + "'>" + key + "</td></tr>";
+        unit[val[0]-1] = val[1];
+        g[val[0]-1] = val[2];
+        calorie[val[0]-1] = val[3];
+    });
+    $("[id^=name]").click(function(){
+      n = this.id.substring(4, this.id.length);
+      var obj = this;
+      addprocess(obj);
+    }); 
+    loadsearches();
+  });
   loadsearches();
 }
 
-function loadsearches(){  
-  record_info=""; record_n="";
-  for(var i=0, j=0; i<all.length-1; i+=4, j++){
-    if(all[i]!=""){
-      record_info += all[i]+" "+all[i+1]+" "+all[i+2]+" "+all[i+3]+" ";
-      unit[j] = all[i+1];
-      g[j] = all[i+2];
-      calorie[j] = all[i+3];
-      record_n += all_n[j] + " ";
-    }
+function addprocess(e){
+  var todo=true;
+  for(var i=0; i<all.length; i+=4) {
+      if(e.innerHTML == all[i]) {
+          todo=false;
+          break;
+      }
   }
-  localStorage.setItem(store, record_info);  
-  localStorage.setItem(store+"n", record_n);
-  recordtbf.innerHTML = "";
+  if(todo){
+      if(localStorage.getItem(store)){
+          all = localStorage.getItem(store).split(" ");
+          all_n = localStorage.getItem(store+"n").split(" ");
+      }
+      var len = all_n.length;
+      all[len*4] = e.innerHTML;
+      all[len*4+1] = unit[n];
+      all[len*4+2] = g[n];
+      all[len*4+3] = calorie[n];
+      all_n[len] = n;
+      var storetext="", storen="";
+      
+      for(var i=0; i<all.length; i++) {
+          if(i == all.length-1) storetext+=all[i];
+          else storetext+=all[i]+" ";
+      }
+      for(var i=0; i<all_n.length; i++) {
+          if(i == all_n.length-1) storen+=all_n[i];
+          else storen+=all_n[i] + " ";
+      }
+      localStorage.setItem(store,storetext);
+      localStorage.setItem(store+"n",storen);
+      loadsearches();
+  }
+  else alert("已經新增過囉！");
+}
 
-  sum = 0;
-  for(var i = 0, j = 0; i < (all.length-1); i+=4, j++){
-    var a_g = unit[j]*g[j];
-    sum_cal = unit[j]*calorie[j];
-    if(all_n[j]!=undefined && all_n[j]!=""){
-      recordtbf.innerHTML+="<tr><td id = 'name"+all_n[j]+"'>" + all[i] + "</td><td id = 'unit" + all_n[j] + "'>" + all[i+1] + "</td><td id ='g"+all_n[j]+ "'>" + a_g + "</td><td id = 'calorie"+all_n[j]+"'>"+ sum_cal +"卡</td><td><input type = 'button' id ='btn"+all_n[j]+"' onclick='advise(this)' value = '修改'><input type = 'button' id = 'delbtn"+all_n[j]+"' onclick='del(this)' value = '刪除'></td></tr>";
+var Newunit;
+function update(e){
+    n = e.id.substring(3, e.id.length);
+    if(flag[n]){
+        document.getElementById("unit"+n).innerHTML = "<input type='text' id='newunit' autofocus>";
+        flag[n] = false;
     }
-    sum += sum_cal;
+    else{
+        Newunit = document.getElementById("newunit").value; 
+        document.getElementById("unit"+n).innerHTML = Newunit;
+        var tmp;
+        for(var i=0; i<all_n.length; i++){
+            if(all_n[i]==n) {
+                tmp = i;    break;
+            }
+        }
+        all[4*i+1] = Newunit;
+        var storetext="";
+        for(var i=0; i<all.length; i++) {
+            if(i == all.length-1) storetext+=all[i];
+            else storetext+=all[i]+" ";
+        }
+        localStorage.setItem(store,storetext);
+        flag[n] = true;
+        loadsearches();
+    }
+}
+
+function remove(e){
+  n = e.id.substring(3, e.id.length);
+  var tmp;
+  for(var i=0; i<all_n.length; i++){
+      if(all_n[i]==n) {
+          tmp = i;    break;
+      }
   }
-  localStorage.setItem(Name+"-today_eat", sum);
+  var storetext="", storen="";
+  if(tmp == all_n.length-1) all_n.length--;
+  for(var i=0; i<all_n.length; i++) {
+      if(i==tmp) continue;
+      if(i == all_n.length-1) {
+          storetext+=all[4*i]+" "+all[4*i+1]+" "+all[4*i+2]+" "+all[4*i+3];
+          storen+=all_n[i];
+      }
+      else {
+        storetext+=all[4*i]+" "+all[4*i+1]+" "+all[4*i+2]+" "+all[4*i+3]+" ";
+          storen+=all_n[i]+" ";
+      }
+  }
+  if(storen == "") {
+      localStorage.removeItem(store+"n");
+      localStorage.removeItem(store);
+      all = [];
+      all_n = [];
+  }
+  else{
+      localStorage.setItem(store,storetext);
+      localStorage.setItem(store+"n",storen);
+  }
+  loadsearches();
+}
+
+function loadsearches(){
+  recordtb.innerHTML="";
+  if(localStorage.getItem(store)){
+      all = localStorage.getItem(store).split(" ");
+      all_n = localStorage.getItem(store+"n").split(" ");
+  }
+  var sum = 0;
+  for(i=0; i<all_n.length; i++){
+    if(all_n[i]=="") break;
+    var new_g = all[4*i+2]*parseFloat(all[4*i+1]);
+    var sum_cal = all[4*i+3]*parseFloat(all[4*i+1]);
+    
+    recordtb.innerHTML+="<tr><td>"+all[4*i]+"</td><td id = 'unit"+all_n[i]+"'>"+all[4*i+1] +"</td><td>"+new_g+"</td><td>"+sum_cal+"</td><td><input type='button' id='btn"+all_n[i]+"' onclick='update(this)' value='修改'><input type = 'button' id='del"+all_n[i]+"' onclick='remove(this)' value='刪除'><tr>";
+    sum += parseFloat(sum_cal);
+  }
+  localStorage.setItem(Name + "-today_eat", sum);
   calculate();
 }
 
+function add(){
+  var selfname, selfg, selfcal;
+  selfname = prompt("請輸入食物名稱：");
+  selfg = prompt("請輸入1份有幾克：");
+  selfcal = prompt("請輸入1份幾大卡");
+  if(selfname != "" && selfg != "" && selfcal != "" && selfname != null  && selfg != null && selfcal != null){
+      if(isNaN(selfg) || isNaN(selfcal)) alert("請輸入正確格式！");
+      else{
+          for(var i = 185; i < 200; i++){
+              if($("#unit"+i).length == 0) {
+                  n = i;  break;
+              }
+              if(i==199) alert("抱歉自行新增只能給這麼多了！"); 
+          }
+          var tmp = document.createElement("td");
+          tmp.innerHTML = "<tr><td id = 'name" + n + "'>" + selfname + "</td></tr>";
+          unit[n] = "1份";
+          g[n] = selfg;
+          calorie[n] = selfcal;
+          var obj = tmp;
+          addprocess(obj);
+      }
+  }
+}
 function calculate(){
   var Height = localStorage.getItem(Name + "-height");
   var ideal = Height*Height*22/10000;
@@ -154,8 +181,6 @@ function calculate(){
   else if(dif>=sugest && dif<sugest+300) photo.src = "picture/shape2.png";
   else if(dif>=sugest+300 && dif<sugest+600) photo.src = "picture/shape3.png";
   else if(dif>sugest+600) photo.src = "picture/shape4.png";
-  console.log(dif);
-  console.log(sugest);
 }
 
 function readURL(input){
